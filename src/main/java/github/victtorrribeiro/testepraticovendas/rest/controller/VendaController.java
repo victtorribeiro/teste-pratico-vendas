@@ -4,18 +4,17 @@ import github.victtorrribeiro.testepraticovendas.domain.entity.Venda;
 import github.victtorrribeiro.testepraticovendas.domain.entity.Vendedor;
 import github.victtorrribeiro.testepraticovendas.exception.RegraNegocioException;
 import github.victtorrribeiro.testepraticovendas.rest.dto.VendaDTO;
+import github.victtorrribeiro.testepraticovendas.rest.dto.VendaValorDTO;
 import github.victtorrribeiro.testepraticovendas.service.VendaService;
 import github.victtorrribeiro.testepraticovendas.service.VendedorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/venda")
@@ -35,30 +34,39 @@ public class VendaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+    }
+    @GetMapping("/consultaIdVendedor/{vendedor_id}")
+    public List<Venda> consultaT( @PathVariable Integer vendedor_id){
 
-//
-//        try {
-//            Venda venda = service.criarVenda(dto);
-//            return new ResponseEntity(venda, HttpStatus.CREATED);
-//        }catch (Exception e){
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-
-//        Venda venda = Venda.builder()
-//                .vendedor(dto.getVendedor())
-//                .valor(dto.getValor())
-//                .dataVenda(LocalDate.now())
-//                .build();
-//
-//        try{
-//            Venda vendaCriada = service.criarVenda(venda);
-//            return new ResponseEntity(vendaCriada, HttpStatus.CREATED);
-//        } catch (Exception e){
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
+        return service.consultaByVendedor(vendedor_id);
     }
 
-    private Venda converter(VendaDTO dto) {
+    @GetMapping("/consultaVendedorData")
+    public List<Venda> consultarVendedorData(
+                    @RequestParam(value = "vendedor_id") Integer vendedor_id,
+                    @RequestParam(value = "data_inicial", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data_inicial,
+                    @RequestParam(value = "data_final", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data_final
+                ){
+
+
+        return service.consultaByVendedorByData(vendedor_id, data_inicial, data_final);
+    }
+
+    @GetMapping("/consultaVendaVendedor")
+    public List<VendaValorDTO> consultaVendaVendedor(
+            @RequestParam(value = "data_inicial", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data_inicial,
+            @RequestParam(value = "data_final", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data_final
+    ){
+
+        List<VendaValorDTO> valor = service.consultaByVendasVendedor(data_inicial, data_final);
+        System.out.println(valor);
+        return valor;
+    }
+
+
+
+
+    public Venda converter(VendaDTO dto) {
         Venda venda = new Venda();
 
         venda.setDataVenda(LocalDate.now());

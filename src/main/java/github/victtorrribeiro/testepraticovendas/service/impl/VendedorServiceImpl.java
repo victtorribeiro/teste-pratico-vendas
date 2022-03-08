@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,4 +27,5 @@ public class VendedorServiceImpl implements VendedorService {
     public Optional<Vendedor> obterPorId(Integer id) {
         return repository.findById(id);
     }
+
 }

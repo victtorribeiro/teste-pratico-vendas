@@ -1,10 +1,12 @@
 package github.victtorrribeiro.testepraticovendas.domain.entity;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -26,6 +28,8 @@ public class Venda {
 
     @Column(name = "data_venda")
     private LocalDate dataVenda;
+
+
     @Column(scale = 2, precision = 20)
     private BigDecimal valor;
 

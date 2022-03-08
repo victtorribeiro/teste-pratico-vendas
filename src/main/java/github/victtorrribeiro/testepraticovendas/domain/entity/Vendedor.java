@@ -21,9 +21,6 @@ public class Vendedor {
 
     @Column
     private String nome;
-//
-//    @OneToMany(mappedBy = "vendedor", fetch = FetchType.LAZY)
-//    private Set<Venda> vendas;
 
 
 }
